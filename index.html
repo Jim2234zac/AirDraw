@@ -3,25 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript Web Project</title>
+    <title>AirDraw - วาดรูปด้วยนิ้วมือ</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- MediaPipe Hands -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
 </head>
 <body>
     <header>
-        <h1>ยินดีต้อนรับสู่โปรเจ็ค JavaScript</h1>
+        <h1>AirDraw</h1>
     </header>
     
     <main>
-        <section id="content">
-            <h2>เนื้อหาหลัก</h2>
-            <p>นี่คือโปรเจ็ค JavaScript ของคุณ</p>
-            <button id="myButton">คลิกที่นี่</button>
-            <div id="result"></div>
-        </section>
+        <div class="controls">
+            <button id="startCamera">📷 เปิดกล้อง</button>
+            <button id="stopCamera" disabled>⏹️ ปิดกล้อง</button>
+            <button id="clearCanvas">🗑️ ลบรูป</button>
+            <button id="saveDrawing">💾 บันทึกรูป</button>
+            
+            <div class="color-controls">
+                <label for="colorPicker">สี:</label>
+                <input type="color" id="colorPicker" value="#FF0000">
+                
+                <label for="brushSize">ขนาด:</label>
+                <input type="range" id="brushSize" min="1" max="20" value="3">
+                <span id="sizeValue">3</span>
+            </div>
+            
+            <div class="mode-controls">
+                <label>
+                    <input type="radio" name="drawMode" value="draw" checked> วาด
+                </label>
+                <label>
+                    <input type="radio" name="drawMode" value="erase"> ลบ
+                </label>
+            </div>
+        </div>
+        
+        <div class="canvas-container">
+            <video id="videoElement" autoplay muted playsinline></video>
+            <canvas id="drawingCanvas"></canvas>
+            <canvas id="handCanvas"></canvas>
+            
+                        
+                        
+            <!-- Color selection indicator -->
+            <div id="colorIndicator" class="color-indicator">
+                <div class="indicator-dot"></div>
+                <div class="indicator-text">เลือกสีแล้ว!</div>
+            </div>
+        </div>
+        
+        <div id="status" class="status">
+            <p>👋 คลิก "เปิดกล้อง" เพื่อเริ่มต้น</p>
+        </div>
     </main>
     
     <footer>
-        <p>&copy; 2026 JavaScript Project</p>
+        <p>&copy; 2026 AirDraw - Hand Tracking Drawing App Made by Jirayu</p>
     </footer>
     
     <script src="script.js"></script>

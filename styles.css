@@ -6,92 +6,237 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    color: #1a1a1a;
+    background-color: #fafafa;
+    overflow-x: hidden;
 }
 
 /* Header styling */
 header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #ffffff;
+    color: #1a1a1a;
     text-align: center;
-    padding: 2rem 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 header h1 {
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: 1.8rem;
+    font-weight: 400;
+    letter-spacing: -0.5px;
 }
 
 /* Main content */
 main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 2rem;
+    max-width: 1000px;
+    margin: 1.5rem auto;
+    padding: 0 1.5rem;
 }
 
-#content {
+/* Controls section */
+.controls {
     background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-#content h2 {
-    color: #667eea;
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
-}
-
-#content p {
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
     margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
 }
 
-/* Button styling */
-#myButton {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.controls button {
+    background: #1a1a1a;
     color: white;
     border: none;
-    padding: 12px 24px;
-    font-size: 1rem;
-    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 1rem;
+    transition: background-color 0.2s ease;
+    min-width: 100px;
 }
 
-#myButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+.controls button:hover:not(:disabled) {
+    background: #333;
 }
 
-#myButton:active {
-    transform: translateY(0);
+.controls button:disabled {
+    background: #e5e5e5;
+    color: #999;
+    cursor: not-allowed;
 }
 
-/* Result area */
-#result {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 5px;
-    border-left: 4px solid #667eea;
-    min-height: 50px;
-    font-style: italic;
+.color-controls, .mode-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.color-controls label, .mode-controls label {
+    font-weight: 400;
     color: #666;
+    font-size: 0.9rem;
+}
+
+#colorPicker {
+    width: 40px;
+    height: 30px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#brushSize {
+    width: 80px;
+}
+
+#sizeValue {
+    background: #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-weight: 400;
+    min-width: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Canvas container */
+.canvas-container {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    max-width: 100%;
+    height: 500px; /* Fixed height for larger camera view */
+}
+
+#videoElement {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#drawingCanvas, #handCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(-1);
+}
+
+#drawingCanvas {
+    z-index: 2;
+    pointer-events: none;
+}
+
+#handCanvas {
+    z-index: 1;
+    pointer-events: none;
+}
+
+
+
+/* Color selection indicator */
+.color-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid #e5e5e5;
+    z-index: 20;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+}
+
+.color-indicator.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.indicator-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #FF0000;
+    margin: 0 auto 6px;
+}
+
+.indicator-text {
+    text-align: center;
+    font-weight: 400;
+    color: #1a1a1a;
+    font-size: 12px;
+}
+
+/* Responsive color zones */
+@media (max-width: 768px) {
+    .color-zone {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .color-zone {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .color-indicator {
+        padding: 10px 15px;
+    }
+    
+    .indicator-text {
+        font-size: 12px;
+    }
+}
+
+/* Status section */
+.status {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.status p {
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.status.active {
+    border-left: 3px solid #4CAF50;
+}
+
+.status.error {
+    border-left: 3px solid #dc3545;
 }
 
 /* Footer */
 footer {
-    background: #333;
-    color: white;
+    background: white;
+    color: #666;
     text-align: center;
     padding: 1rem 0;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid #e5e5e5;
+    font-size: 0.85rem;
 }
 
 /* Responsive design */
@@ -104,7 +249,106 @@ footer {
         padding: 0 1rem;
     }
     
-    #content {
-        padding: 1.5rem;
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .color-controls, .mode-controls {
+        margin-left: 0;
+        justify-content: center;
+    }
+    
+    .controls button {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .canvas-container {
+        height: 400px;
+    }
+    
+    .camera-controls {
+        top: 10px;
+        left: 10px;
+        gap: 10px;
+    }
+    
+    .color-palette {
+        padding: 8px;
+        gap: 6px;
+    }
+    
+    .color-btn {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .brush-controls {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 1rem 0;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .controls {
+        padding: 1rem;
+    }
+    
+    .color-controls {
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+    
+    .canvas-container {
+        height: 300px;
+    }
+    
+    .camera-controls {
+        top: 5px;
+        left: 5px;
+        gap: 8px;
+    }
+    
+    .color-palette {
+        grid-template-columns: repeat(4, 1fr);
+        padding: 6px;
+        gap: 4px;
+    }
+    
+    .color-btn {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .brush-controls {
+        padding: 6px;
+    }
+    
+    .brush-size-btn {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .brush-size-btn.small {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .brush-size-btn.large {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .tool-btn {
+        font-size: 10px;
+        padding: 6px 8px;
     }
 }
