@@ -1,0 +1,24 @@
+{
+  "name": "javascript-web-project",
+  "version": "1.0.0",
+  "description": "โปรเจ็คเว็บแอปพลิเคชัน JavaScript พื้นฐาน",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000",
+    "dev": "live-server --port=3000 --open=/index.html",
+    "build": "echo 'No build process needed for vanilla JS'",
+    "test": "echo 'No tests specified yet'"
+  },
+  "keywords": [
+    "javascript",
+    "web",
+    "html",
+    "css",
+    "frontend"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
